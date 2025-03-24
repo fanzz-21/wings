@@ -229,7 +229,7 @@ func (e *Environment) Create() error {
 
 		// Configure the mounts for this container. First mount the server data directory
 		// into the container as an r/w bind.
-		Mounts: e.convertMounts(),
+		Mounts: e.convertMounts(cfg.Docker.MountBasePath),
 
 		// Configure the /tmp folder mapping in containers. This is necessary for some
 		// games that need to make use of it for downloads and other installation processes.
@@ -438,13 +438,13 @@ func (e *Environment) ensureImageExists(img string) error {
 	return nil
 }
 
-func (e *Environment) convertMounts() []mount.Mount {
+func (e *Environment) convertMounts(basePath string) []mount.Mount {
 	mounts := e.Configuration.Mounts()
 	out := make([]mount.Mount, len(mounts))
 	for i, m := range mounts {
 		out[i] = mount.Mount{
 			Type:     mount.TypeBind,
-			Source:   m.Source,
+			Source:   basePath + m.Source,
 			Target:   m.Target,
 			ReadOnly: m.ReadOnly,
 		}

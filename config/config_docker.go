@@ -51,6 +51,10 @@ type DockerConfiguration struct {
 	// Domainname is the Docker domainname for all containers.
 	Domainname string `default:"" json:"domainname" yaml:"domainname"`
 
+	// MountBasePath is the base directory of mount points in respective of docker namespace.
+	// This is meant to be used when running wings under docker containers.
+	MountBasePath string `default:"" json:"mount_base_path" yaml:"mount_base_path"`
+
 	// Registries .
 	Registries map[string]RegistryConfiguration `json:"registries" yaml:"registries"`
 
