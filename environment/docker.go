@@ -2,6 +2,7 @@ package environment
 
 import (
 	"context"
+	"os"
 	"strconv"
 	"sync"
 
@@ -35,6 +36,12 @@ func ConfigureDocker(ctx context.Context) error {
 	cli, err := Docker()
 	if err != nil {
 		return err
+	}
+
+	if basepath := os.Getenv("DOCKER_MOUNT_BASE_PATH"); basepath != "" {
+		config.Update(func(c *config.Configuration) {
+			c.Docker.MountBasePath = basepath
+		})
 	}
 
 	nw := config.Get().Docker.Network
